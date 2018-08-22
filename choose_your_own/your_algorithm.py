@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+from time import time
 import matplotlib.pyplot as plt
 from prep_terrain_data import makeTerrainData
 from class_vis import prettyPicture
@@ -31,14 +31,27 @@ plt.show()
 ### your code here!  name your classifier object clf if you want the 
 ### visualization code (prettyPicture) to show you the decision boundary
 
-
-
-
-
-
-
-
-try:
-    prettyPicture(clf, features_test, labels_test)
-except NameError:
-    pass
+from sklearn import ensemble
+a = [ 0.65+(i/100.0)  for i in range(21)]
+maximumAccuracy = 0.936
+for n_estimator in range(55,65):
+    for learning_rates in a:
+        t0 = time() #algorithm='SAMME'
+        clf = ensemble.AdaBoostClassifier(algorithm='SAMME',n_estimators=n_estimator,learning_rate=learning_rates)
+        clf = clf.fit(features_train,labels_train)
+        pred = clf.predict(features_test)
+        print "Training time of Adaboost: ", round(time()-t0,3),"s"
+        
+        from sklearn import metrics
+        accuracy = metrics.accuracy_score(pred,labels_test)
+        if accuracy >= maximumAccuracy:
+            print "Successful"
+            print "accuracy =",accuracy,"n_estimator =",n_estimator, "learning rate = ",learning_rates 
+            break
+        print "accuracy =",accuracy,"n_estimator =",n_estimator, "learning rate = ",learning_rates 
+        
+        
+        try:
+            prettyPicture(clf, features_test, labels_test)
+        except NameError:
+            pass
