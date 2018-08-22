@@ -20,14 +20,26 @@ from email_preprocess import preprocess
 ### and testing datasets, respectively
 ### labels_train and labels_test are the corresponding item labels
 features_train, features_test, labels_train, labels_test = preprocess()
-
+features_train = features_train[:len(features_train)/100]
+labels_train = labels_train[:len(labels_train)/100]
 
 
 
 #########################################################
 ### your code goes here ###
 
+t0 = time()
+from sklearn.naive_bayes import GaussianNB
+clf = GaussianNB()
+clf.fit(features_train,labels_train)
+print "Training time: ",round(time()-t0,3),"s"
 
+t0 = time()
+predictions = clf.predict(features_test)
+from sklearn.metrics import accuracy_score
+accuracy = accuracy_score(predictions,labels_test)
+print accuracy
+print "prediction time:", round(time()-t0, 3), "s"
 #########################################################
 
 
