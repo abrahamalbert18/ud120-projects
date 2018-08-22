@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+def getKey(item):
+    return item[2]
 
 def outlierCleaner(predictions, ages, net_worths):
     """
@@ -12,9 +14,16 @@ def outlierCleaner(predictions, ages, net_worths):
     """
     
     cleaned_data = []
-
+    numOfOutliers = int(len(predictions)*0.1)
     ### your code goes here
-
     
+    for i in range(len(predictions)):
+        error = predictions[i] - net_worths[i]
+        cleaned_data.append((ages[i],net_worths[i],error))
+    
+    cleaned_data.sort(key = getKey)
+    outliers = cleaned_data[len(predictions)-numOfOutliers+1:]
+    print "Outliers = ",outliers
+    cleaned_data = cleaned_data[:len(predictions)-numOfOutliers]
     return cleaned_data
 

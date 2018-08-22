@@ -27,14 +27,15 @@ ages_train, ages_test, net_worths_train, net_worths_test = train_test_split(ages
 ### the plotting code below works, and you can see what your regression looks like
 
 
+from sklearn import linear_model
 
+reg = linear_model.LinearRegression()
+reg = reg.fit(ages_train,net_worths_train)
 
+print "Slope of the line with outliers : ",reg.coef_
 
-
-
-
-
-
+score = reg.score(ages_test,net_worths_test)
+print "Score of the line with outliers of test data : ",score
 
 try:
     plt.plot(ages, reg.predict(ages), color="blue")
@@ -52,10 +53,6 @@ try:
 except NameError:
     print "your regression object doesn't exist, or isn't name reg"
     print "can't make predictions to use in identifying outliers"
-
-
-
-
 
 
 
@@ -82,3 +79,8 @@ if len(cleaned_data) > 0:
 else:
     print "outlierCleaner() is returning an empty list, no refitting to be done"
 
+
+print "Slope of the line with removal of outliers : ",reg.coef_
+
+score = reg.score(ages_test,net_worths_test)
+print "Score of the line with removal outliers of test data : ",score
