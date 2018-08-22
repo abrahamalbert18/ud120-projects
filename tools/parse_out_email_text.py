@@ -19,7 +19,7 @@ def parseOutText(f):
 
     f.seek(0)  ### go back to beginning of file (annoying)
     all_text = f.read()
-
+    stemmed_words = []
     ### split off metadata
     content = all_text.split("X-FileName:")
     words = ""
@@ -28,27 +28,40 @@ def parseOutText(f):
         text_string = content[1].translate(string.maketrans("", ""), string.punctuation)
 
         ### project part 2: comment out the line below
-        words = text_string
+        #words = text_string
 
         ### split the text string into individual words, stem each word,
         ### and append the stemmed word to words (make sure there's a single
         ### space between each stemmed word)
-        
-
-
-
-
+        words = text_string.strip().split()
+        stemmer = SnowballStemmer("english")
+        stemmed_words = [ stemmer.stem(word) for word in words]
+        words = " ".join(stemmed_words)
+    
     return words
 
     
 
-def main():
-    ff = open("../text_learning/test_email.txt", "r")
-    text = parseOutText(ff)
-    print text
 
 
+ff = open("../text_learning/test_email.txt", "r")
+text = parseOutText(ff)
+print "stemmed_text :", text
 
-if __name__ == '__main__':
-    main()
+ff = open("..\..\..\maildir\shackleton-s\\all_documents\\3520","r")
+print "---------------------------------"
+text = parseOutText(ff)
+print "stemmed_text :", text
+words_text =text.split(' ')
+print words_text
+print len(words_text)
+
+words = ["sara", "shackleton", "chris", "germani"]
+for w in words_text:
+    if w in words:
+        words_text.remove(w)
+print words_text
+print len(words_text)
+
+ 
 
